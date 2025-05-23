@@ -53,18 +53,15 @@ def separate_audio_with_demucs(file_path: str):
         print(f"Demucs failed: {e}")
 
 
-# Example usage
-
-# Example usage:
 print("Downloading YouTube audio...")
 file_name = download_youtube_mp3(youtube_url)
+
 print("Extracting stems...")
 separate_audio_with_demucs(file_name)
-print("Overlaying bass & drum stems...")
 
-# Load both audio files
-audio1 = AudioSegment.from_file("./separated/htdemucs/[trackname]/bass.mp3")
-audio2 = AudioSegment.from_file("./separated/htdemucs/[trackname]/drums.mp3")
+print("Overlaying bass & drum stems...")
+audio1 = AudioSegment.from_file(f"./separated/htdemucs/{file_name}/bass.mp3")
+audio2 = AudioSegment.from_file(f"./separated/htdemucs/{file_name}/drums.mp3")
 
 # Overlay audio2 on top of audio1 starting at the beginning (position=0)
 combined = audio1.overlay(audio2)

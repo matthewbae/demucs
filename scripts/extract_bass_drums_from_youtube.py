@@ -37,7 +37,7 @@ def download_youtube_mp3(url: str, output_dir: str = ".") -> str:
     if info:
         title = info.get("title", "unknown_title")
         filename = f"{title}.mp3"
-        return filename
+        return title, filename
     else:
         raise RuntimeError("Failed to download or extract YouTube info.")
 
@@ -53,18 +53,18 @@ def separate_audio_with_demucs(file_path: str):
 
 
 print("Downloading YouTube audio...")
-file_name = download_youtube_mp3(youtube_url)
+title, file_name = download_youtube_mp3(youtube_url)
 
 print("Extracting stems...")
 separate_audio_with_demucs(file_name)
 
 print("Overlaying bass & drum stems...")
-audio1 = AudioSegment.from_file(f"./separated/htdemucs/{file_name}/bass.mp3")
-audio2 = AudioSegment.from_file(f"./separated/htdemucs/{file_name}/drums.mp3")
+audio1 = AudioSegment.from_file(f"./separated/htdemucs/{title}/bass.mp3")
+audio2 = AudioSegment.from_file(f"./separated/htdemucs/{title}/drums.mp3")
 
 # Overlay audio2 on top of audio1 starting at the beginning (position=0)
 combined = audio1.overlay(audio2)
 
 # Export result
-combined.export(f"{file_name}_bass_and_drums.mp3", format="mp3")
+combined.export(f"{title}_bass_and_drums.mp3", format="mp3")
 print("Done")

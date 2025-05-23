@@ -39,3 +39,9 @@ yarn-error.*
 
 expo-env.d.ts
 # @end expo-cli
+
+# Python virtual environment
+.venv/
+
+# VS Code workspace settings (optional)
+.vscode/

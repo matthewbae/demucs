@@ -11,7 +11,6 @@ import yt_dlp
 from pydub import AudioSegment
 
 youtube_url = sys.argv[1]
-output_name = sys.argv[2]
 
 
 def download_youtube_mp3(url: str, output_dir: str = ".") -> str:
@@ -67,5 +66,5 @@ audio2 = AudioSegment.from_file(f"./separated/htdemucs/{file_name}/drums.mp3")
 combined = audio1.overlay(audio2)
 
 # Export result
-combined.export(f"{output_name}_bass_and_drums.mp3", format="mp3")
+combined.export(f"{file_name}_bass_and_drums.mp3", format="mp3")
 print("Done")

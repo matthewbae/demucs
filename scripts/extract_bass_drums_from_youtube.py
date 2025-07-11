@@ -84,7 +84,7 @@ target_ext = ".mp3"
 for f in os.listdir("."):
     print(repr(f))
 
-matching_file = None
+matching_file_path = None
 for f in os.listdir("."):
     if not f.lower().endswith(target_ext):
         continue
@@ -92,31 +92,44 @@ for f in os.listdir("."):
     f_normalized = normalize_visually(f)
 
     if normalized_title.lower() in f_normalized.lower():
-        matching_file = f
+        matching_file_path = f
         break
 
-if not matching_file:
+if not matching_file_path:
     raise FileNotFoundError(f"Couldn't find a file matching: {normalized_title}")
 
 # Remove special characters
-safe_name = re.sub(SPECIAL_CHARS, "", matching_file)
+safe_path = re.sub(SPECIAL_CHARS, "", matching_file_path)
+safe_title = re.sub(SPECIAL_CHARS, "", normalized_title)
 
-if matching_file != safe_name:
-    os.rename(matching_file, safe_name)
-    print(f"Renamed to: {safe_name}")
+if matching_file_path != safe_path:
+    os.rename(matching_file_path, safe_path)
+    print(f"Renamed to: {safe_path}")
 else:
     print("Filename is already clean.")
 
 print("Extracting stems...")
-separate_audio_with_demucs(safe_name)
+separate_audio_with_demucs(safe_path)
 
 print("Overlaying bass & drum stems...")
-audio1 = AudioSegment.from_file(f"./separated/htdemucs/{title}/bass.mp3")
-audio2 = AudioSegment.from_file(f"./separated/htdemucs/{title}/drums.mp3")
+bass = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/bass.mp3")
+drums = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/drums.mp3")
 
-# Overlay audio2 on top of audio1 starting at the beginning (position=0)
-combined = audio1.overlay(audio2)
+# Get loudness in dBFS
+bass_loudness = bass.dBFS
+drums_loudness = drums.dBFS
 
-# Export result
-combined.export(f"{title}_bass_and_drums.mp3", format="mp3")
+print(f"Bass loudness: {bass_loudness} dBFS")
+print(f"Drums loudness: {drums_loudness} dBFS")
+
+# Find the quieter track and match its loudness to the louder one
+if bass_loudness < drums_loudness:
+    gain_needed = drums_loudness - bass_loudness
+    bass = bass.apply_gain(gain_needed)
+else:
+    gain_needed = bass_loudness - drums_loudness
+    drums = drums.apply_gain(gain_needed)
+
+# Overlay the two adjusted tracks
+combined = bass.overlay(drums)
 print("Done")

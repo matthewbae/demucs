@@ -115,21 +115,15 @@ print("Overlaying bass & drum stems...")
 bass = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/bass.mp3")
 drums = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/drums.mp3")
 
-# Get loudness in dBFS
-bass_loudness = bass.dBFS
-drums_loudness = drums.dBFS
+# Target loudness
+target_bass_dBFS = -13.0
+target_drums_dBFS = -14.0
 
-print(f"Bass loudness: {bass_loudness} dBFS")
-print(f"Drums loudness: {drums_loudness} dBFS")
+# Apply gain to bring both to target dBFS
+bass = bass.apply_gain(target_bass_dBFS - bass.dBFS)
+drums = drums.apply_gain(target_drums_dBFS - drums.dBFS)
 
-# Find the quieter track and match its loudness to the louder one
-if bass_loudness < drums_loudness:
-    gain_needed = drums_loudness - bass_loudness
-    bass = bass.apply_gain(gain_needed)
-else:
-    gain_needed = bass_loudness - drums_loudness
-    drums = drums.apply_gain(gain_needed)
-
-# Overlay the two adjusted tracks
+# Overlay and export
 combined = bass.overlay(drums)
+combined.export(f"{safe_title}_bass_and_drums.mp3", format="mp3")
 print("Done")

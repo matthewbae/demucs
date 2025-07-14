@@ -116,8 +116,8 @@ bass = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/bass.mp3")
 drums = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/drums.mp3")
 
 # Target loudness
-target_bass_dBFS = -13.0
-target_drums_dBFS = -14.0
+target_bass_dBFS = -16.0
+target_drums_dBFS = -18.0
 
 # Apply gain to bring both to target dBFS
 bass = bass.apply_gain(target_bass_dBFS - bass.dBFS)

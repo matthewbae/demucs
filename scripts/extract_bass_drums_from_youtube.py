@@ -115,13 +115,15 @@ print("Overlaying bass & drum stems...")
 bass = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/bass.mp3")
 drums = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/drums.mp3")
 
-# Target loudness
-target_bass_dBFS = -16.0
-target_drums_dBFS = -18.0
+print("dBFS of bass:", bass.dBFS)
+print("dBFS of drums:", drums.dBFS)
+# # Target loudness
+# target_bass_dBFS = -17.0
+# target_drums_dBFS = -19.0
 
-# Apply gain to bring both to target dBFS
-bass = bass.apply_gain(target_bass_dBFS - bass.dBFS)
-drums = drums.apply_gain(target_drums_dBFS - drums.dBFS)
+# # Apply gain to bring both to target dBFS
+# bass = bass.apply_gain(target_bass_dBFS - bass.dBFS)
+# drums = drums.apply_gain(target_drums_dBFS - drums.dBFS)
 
 # Overlay and export
 combined = bass.overlay(drums)

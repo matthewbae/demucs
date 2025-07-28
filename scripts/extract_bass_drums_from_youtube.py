@@ -16,7 +16,7 @@ from pydub import AudioSegment
 
 # Characters invalid in file names (Windows/macOS/Linux)
 SPECIAL_CHARS = (
-    r'[<>:"/\\|?*\x00-\x1F\u2022\u29F8]'  # includes fancy slashes and bullets
+    r'[<>:"/\\|?*\x00-\x1F\u2022\u29F8\uff1f]'  # includes fancy slashes and bullets
 )
 
 youtube_url = sys.argv[1]
@@ -117,13 +117,14 @@ drums = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/drums.mp3")
 
 print("dBFS of bass:", bass.dBFS)
 print("dBFS of drums:", drums.dBFS)
-# # Target loudness
-# target_bass_dBFS = -17.0
-# target_drums_dBFS = -19.0
 
-# # Apply gain to bring both to target dBFS
-# bass = bass.apply_gain(target_bass_dBFS - bass.dBFS)
-# drums = drums.apply_gain(target_drums_dBFS - drums.dBFS)
+# Target loudness
+target_bass_dBFS = -30.0
+target_drums_dBFS = -30.0
+
+# Apply gain to bring both to target dBFS
+bass = bass.apply_gain(target_bass_dBFS - bass.dBFS)
+drums = drums.apply_gain(target_drums_dBFS - drums.dBFS)
 
 # Overlay and export
 combined = bass.overlay(drums)

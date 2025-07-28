@@ -1,5 +1,6 @@
-Freddie the Freeloader,https://music.youtube.com/watch?v=F-SuJ3bLkLI&si=gmkPXS62yau02bGK
-Bluesy,https://music.youtube.com/watch?v=KBG0TjFfZvg
-Scrapple From the Apple (Oscar Peterson),https://music.youtube.com/watch?v=gcSClDuFdQQ&si=ZQ_F3tFvsIfJQhpA
-Scrapple From the Apple (Keith Jarrett),https://music.youtube.com/watch?v=0TtaoCEBA8g&si=eaVa1Z-huW2YVp2q
-What is this thing called love (Keith Jarrett),https://music.youtube.com/watch?v=07jb-nVRUpo&si=6UKntdBiqkXNsFmS
+Freddie the Freeloader,python3 ./extract_bass_drums_from_youtube.py "https://music.youtube.com/watch?v=F-SuJ3bLkLI&si=gmkPXS62yau02bGK"
+Bluesy,python3 ./extract_bass_drums_from_youtube.py "https://music.youtube.com/watch?v=KBG0TjFfZvg"
+Scrapple From the Apple (Oscar Peterson),python3 ./extract_bass_drums_from_youtube.py "https://music.youtube.com/watch?v=gcSClDuFdQQ&si=ZQ_F3tFvsIfJQhpA"
+Scrapple From the Apple (Keith Jarrett),python3 ./extract_bass_drums_from_youtube.py "https://music.youtube.com/watch?v=0TtaoCEBA8g&si=eaVa1Z-huW2YVp2q"
+What is this thing called love (Keith Jarrett),python3 ./extract_bass_drums_from_youtube.py "https://music.youtube.com/watch?v=07jb-nVRUpo&si=6UKntdBiqkXNsFmS"
+What is this thing called love (Bill Evans),python3 ./extract_bass_drums_from_youtube.py "https://music.youtube.com/watch?v=Oi5bS3IsrE4&si=qIWxPSEWtEiNnjsC"

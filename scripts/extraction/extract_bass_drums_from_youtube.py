@@ -21,6 +21,8 @@ SPECIAL_CHARS = (
 
 youtube_url = sys.argv[1]
 
+MODEL = "htdemucs_ft"  # Model to use for Demucs separation
+
 
 def normalize_visually(s: str) -> str:
     s = unicodedata.normalize("NFKC", s)
@@ -68,7 +70,19 @@ def download_youtube_mp3(url: str, output_dir: str = ".") -> str:
 def separate_audio_with_demucs(file_path: str):
     try:
         subprocess.run(
-            ["python3", "-m", "demucs", "-d", "cpu", "--jobs", "2", "--mp3", file_path],
+            [
+                "python3",
+                "-m",
+                "demucs",
+                "-d",
+                "cpu",
+                "--jobs",
+                "2",
+                "-n",
+                MODEL,
+                "--mp3",
+                file_path,
+            ],
             check=True,
         )
     except subprocess.CalledProcessError as e:
@@ -112,8 +126,8 @@ print("Extracting stems...")
 separate_audio_with_demucs(safe_path)
 
 print("Overlaying bass & drum stems...")
-bass = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/bass.mp3")
-drums = AudioSegment.from_file(f"./separated/htdemucs/{safe_title}/drums.mp3")
+bass = AudioSegment.from_file(f"./separated/{MODEL}/{safe_title}/bass.mp3")
+drums = AudioSegment.from_file(f"./separated/{MODEL}/{safe_title}/drums.mp3")
 
 print("dBFS of bass:", bass.dBFS)
 print("dBFS of drums:", drums.dBFS)
